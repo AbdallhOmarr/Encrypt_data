@@ -1,2 +1,2 @@
 # Encrypt_data
-If you want to encrypt your data
+This Gui APP Take an Excel as an Input and export an Excel but the data in it is randomly changed
