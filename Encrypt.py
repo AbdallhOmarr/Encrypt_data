@@ -22,8 +22,6 @@ def rephrase(a):
 
 
 
-
-
 class App(tk.Tk):
     def __init__(self):
         super().__init__()
@@ -47,14 +45,8 @@ class App(tk.Tk):
 
     def button1_clicked(self):
         self.source = fd.askopenfilename()
-        
-        self.df = pd.read_excel(self.source)
-
-
-
-
-
-
+        self.workbook= load_workbook(self.source)
+        self.sheet=self.workbook.active
 
     def button_clicked(self):
         def rephrase(a):
@@ -63,11 +55,11 @@ class App(tk.Tk):
             for item in a:
                 b.append(a[random.randint(0,len(a))-1])
             return "".join(b)
-        for index,row in self.df.iterrows():
-            for item in row :
-                self.df.iloc[  index,row.tolist().index(item) ]= rephrase(self.df.iloc[  index,row.tolist().index(item) ])
-        self.df.to_excel("Output.xlsx",index=False)
-
+        for sheet in self.workbook.worksheets:
+            for row in sheet.iter_rows():
+                for cell in row:
+                    cell.value=rephrase(cell.value)
+        self.workbook.save("Output.xlsx")
 if __name__ == "__main__":
     app = App()
     app.mainloop()
